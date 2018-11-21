@@ -1,0 +1,129 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+ScreenManagement:
+	transition: FadeTransition()
+	Menu:
+		name:'menu'
+	MusicScreen:
+		name: 'music'
+	PlayListScreen:
+		name: 'playlist'
+	AlbunsScreen:
+		name: 'albuns'
+	RecorderScreen:
+		name:'recorder'
+	CompositorScreen:
+		name:'compositor'
+	MusicalPeriod:
+		name:'musicper'
+
+<MenuButton@Button>:
+	font_size:30
+	size_hint:0.15,0.01
+
+<Menu>:	
+	BoxLayout:
+		orientation:'vertical'
+		
+		MenuButton:
+			text:"Musics"
+			on_press:root.manager.current = "music"
+		MenuButton:
+			text:"PlayLists"
+			on_press:root.manager.current = "playlist"
+		MenuButton:
+			text:"Albuns"
+			on_press:root.manager.current = "albuns"
+		MenuButton:
+			text:"Recorders"
+			on_press:root.manager.current = "recorder"
+		MenuButton:
+			text:"Compositors"
+			on_press:root.manager.current = "compositor"
+			
+		MenuButton:
+			text:"Musical Period"
+			on_press:root.manager.current = "musicper"
+			
+
+
+<MusicScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Musics"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.40}
+		    hint_text: 'Description'
+
+
+
+<PlayListScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "PlayLists"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.41}
+		    hint_text: 'Description'
+		
+
+<AlbunsScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Albuns"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.40}
+		    hint_text: 'Description'
+
+
+<RecorderScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Recorders"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.42}
+		    hint_text: 'Description'
+
+
+<CompositorScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Compositors"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.43}
+		    hint_text: 'Description'
+
+	
+<MusicalPeriod>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Musical Period"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.45}
+		    hint_text: 'Description'
+
+
+	
