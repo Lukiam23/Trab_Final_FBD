@@ -6,6 +6,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 from kivy.config import Config
+from kivy.properties import ObjectProperty
 Config.set('graphics', 'width', '1380')
 Config.set('graphics', 'height', '715')
 Config.set('kivy','window_icon','C:\\Users\\mscor\\Documents\\2018.2\\FBD\\logo.jpg')
@@ -14,27 +15,17 @@ Config.set('kivy','window_icon','C:\\Users\\mscor\\Documents\\2018.2\\FBD\\logo.
 
 
 class Menu(Screen):
-	def __init__(self,**kwargs):
-		super(Menu,self).__init__(**kwargs)
+	pass
 
 class MusicScreen(Menu):
 	def __init__(self,**kwargs):
 		super(MusicScreen,self).__init__(**kwargs)
-
-class PlayListTable(ScrollView):
-	def __init__(self,**kwargs):
-		super().__init__(**kwargs)
-		self.data = [str(x) for x in range(1,100)]
-		for row in self.data:
-			self.ids.box.add_widget(Label(text="Test"))
-			
+		self.tarefas = [str(x) for x in range(1,100)]
+		#for tarefa in self.tarefas:
+		#	self.ids.box.add_widget(Label(text=tarefa,font_size=30,size_hint_y=None,height=200))
 		
-
 class PlayListScreen(Menu):
-	def __init__(self,**kwargs):
-		super(PlayListScreen,self).__init__(**kwargs)
-
-
+	pass
 
 class AlbunsScreen(Menu):
 	pass
@@ -48,11 +39,17 @@ class CompositorScreen(Menu):
 class MusicalPeriod(Menu):
 	pass
 
-class ScreenManagement(ScreenManager):
-	pass
+class Manager(ScreenManager):
+	menu = ObjectProperty(None)
+	musicScreen = ObjectProperty(None)
+	playListScreen = ObjectProperty(None)
+	albunsScreen = ObjectProperty(None)
+	recorderScreen = ObjectProperty(None)
+	compositorScreen = ObjectProperty(None)
+	musicalPeriod = ObjectProperty(None)
 	
-
 presentation = Builder.load_file("main.kv")
+
 class MyApp(App):
 
     def build(self):

@@ -1,30 +1,142 @@
 #: import FadeTransition kivy.uix.screenmanager.FadeTransition
 
-ScreenManagement:
-	transition: FadeTransition()
-	Menu:
-		name:'menu'
-	MusicScreen:
-		name: 'music'
-	PlayListScreen:
-		name: 'playlist'
-	AlbunsScreen:
-		name: 'albuns'
-	RecorderScreen:
-		name:'recorder'
-	CompositorScreen:
-		name:'compositor'
-	MusicalPeriod:
-		name:'musicper'
-
 <MenuButton@Button>:
 	font_size:30
-	size_hint:0.15,0.01
+	size_hint:0.15,0.01 
 
+<MusicScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Musics"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.40}
+
+
+<PlayListScreen>:
+	box:box
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "PlayLists"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.41}
+
+		ScrollView:
+			size_hint: (1, .9)
+	        bar_width: 10
+	       
+	        effect_cls: "ScrollEffect"
+	        scroll_type: ['bars']
+
+	        GridLayout:
+	        	id:box
+				cols:1
+				orientation: 'vertical'
+				size_hint_y: None
+				height: self.minimum_height 
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+				Label:
+					text:"Teste" 
+					font_size:30
+					size_hint_y:None
+					height:200
+		
+
+<AlbunsScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Albuns"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.40}
+		   
+
+
+
+<RecorderScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Recorders"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.42}
+		    
+
+
+<CompositorScreen>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Compositors"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.43}
+		    
+
+	
+<MusicalPeriod>:
+	FloatLayout:
+		orientation:'vertical'
+		Label:
+			text: "Musical Period"
+			font_size: '40dp'
+			size_hint: (None, None)
+			width:512
+		    height: 50
+		    pos_hint:{'top': 1,'right':0.45}
 <Menu>:	
+
 	BoxLayout:
 		orientation:'vertical'
-		
 		MenuButton:
 			text:"Musics"
 			on_press:root.manager.current = "music"
@@ -43,87 +155,30 @@ ScreenManagement:
 			
 		MenuButton:
 			text:"Musical Period"
-			on_press:root.manager.current = "musicper"
-			
+			on_press:root.manager.current = "musicper" 
 
-
-<MusicScreen>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "Musics"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.40}
-		    hint_text: 'Description'
-
-
-
-<PlayListScreen>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "PlayLists"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.41}
-		    hint_text: 'Description'
-		
-
-<AlbunsScreen>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "Albuns"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.40}
-		    hint_text: 'Description'
-
-
-<RecorderScreen>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "Recorders"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.42}
-		    hint_text: 'Description'
-
-
-<CompositorScreen>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "Compositors"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.43}
-		    hint_text: 'Description'
-
+Manager:
+	id:screen_manager
+	transition: FadeTransition()
 	
-<MusicalPeriod>:
-	FloatLayout:
-		orientation:'vertical'
-		Label:
-			text: "Musical Period"
-			font_size: '40dp'
-			size_hint: (None, None)
-			width:512
-		    height: 50
-		    pos_hint:{'top': 1,'right':0.45}
-		    hint_text: 'Description'
-
-
-	
+	MusicScreen:
+		name: 'music'
+		manager: screen_manager
+	PlayListScreen:
+		name: 'playlist'
+		manager: screen_manager
+	AlbunsScreen:
+		name: 'albuns'
+		manager: screen_manager
+	RecorderScreen:
+		name:'recorder'
+		manager: screen_manager
+	CompositorScreen:
+		name:'compositor'
+		manager: screen_manager
+	MusicalPeriod:
+		name:'musicper'
+		manager: screen_manager
+	Menu:
+		name:'menu'
+		manager: screen_manager
