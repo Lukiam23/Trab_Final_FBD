@@ -27,9 +27,16 @@
 			width:512
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.41}
+		Button:
+			text:"List All PlayLists"
+			size_hint:0.2,0.05
+			on_press:root.populate()
+			pos_hint:{'top': 0.90,'right':1}
 
 		ScrollView:
-			size_hint: (1, .9)
+			id:scroll
+			pos_hint:{'right':1}
+			size_hint: (0.9, .7)
 	        bar_width: 10
 	       
 	        effect_cls: "ScrollEffect"
@@ -41,61 +48,51 @@
 				orientation: 'vertical'
 				size_hint_y: None
 				height: self.minimum_height 
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
-				Label:
-					text:"Teste" 
-					font_size:30
-					size_hint_y:None
-					height:200
+				
 		
 
-<AlbunsScreen>:
+<AlbumsScreen>:
+	title:title
 	FloatLayout:
+		id:albumbox
 		orientation:'vertical'
 		Label:
-			text: "Albuns"
+			id:title
+			text: "Albums"
 			font_size: '40dp'
 			size_hint: (None, None)
 			width:512
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.40}
+		Button:
+			text:"List All Albums"
+			size_hint:0.2,0.05
+			on_press:root.populate()
+			pos_hint:{'top': 0.90,'right':1}
+		Button:
+			text:"Search"
+			size_hint:0.2,0.05
+			pos_hint:{'top': 0.85,'right':1}
+
+		ScrollView:
+			id:scroll
+			pos_hint:{'right':1}
+			size_hint: (0.85, .8)
+	        bar_width: 10
+	       
+	        effect_cls: "ScrollEffect"
+	        scroll_type: ['bars']
+
+	        GridLayout:
+	        	id:box
+				cols:2
+				orientation: 'vertical'
+				size_hint_y: None
+				height: self.minimum_height
 		   
 
 
+<GenericScreen>:
 
 <RecorderScreen>:
 	FloatLayout:
@@ -134,7 +131,6 @@
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.45}
 <Menu>:	
-
 	BoxLayout:
 		orientation:'vertical'
 		MenuButton:
@@ -144,8 +140,8 @@
 			text:"PlayLists"
 			on_press:root.manager.current = "playlist"
 		MenuButton:
-			text:"Albuns"
-			on_press:root.manager.current = "albuns"
+			text:"Albums"
+			on_press:root.manager.current = "albums"
 		MenuButton:
 			text:"Recorders"
 			on_press:root.manager.current = "recorder"
@@ -157,7 +153,7 @@
 			text:"Musical Period"
 			on_press:root.manager.current = "musicper" 
 
-Manager:
+<Manager>:
 	id:screen_manager
 	transition: FadeTransition()
 	
@@ -167,8 +163,8 @@ Manager:
 	PlayListScreen:
 		name: 'playlist'
 		manager: screen_manager
-	AlbunsScreen:
-		name: 'albuns'
+	AlbumsScreen:
+		name: 'albums'
 		manager: screen_manager
 	RecorderScreen:
 		name:'recorder'
@@ -182,3 +178,6 @@ Manager:
 	Menu:
 		name:'menu'
 		manager: screen_manager
+	GenericScreen:
+		name:'generic'
+		manager:screen_manager
