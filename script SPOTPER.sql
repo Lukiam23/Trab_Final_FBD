@@ -49,10 +49,10 @@ USE spotper;
 CREATE TABLE album (
                 cod_album INTEGER NOT NULL,
                 cod_grav INTEGER NOT NULL,
-                descricao VARCHAR NOT NULL,
+                descricao VARCHAR(120) NOT NULL,
                 preco FLOAT NOT NULL,
                 dt_compra DATE NOT NULL,
-                tipo_compra VARCHAR NOT NULL, -- fisica ou download
+                tipo_compra VARCHAR(120) NOT NULL, -- fisica ou download
                 dt_grav DATE NOT NULL,
                 
 )ON spotper_fg01;
@@ -68,9 +68,9 @@ CHECK (tipo_compra = 'cd' or tipo_compra = 'vinil' or tipo_compra = 'download');
 CREATE TABLE faixa (
                 numero INTEGER NOT NULL,
                 cod_album INTEGER NOT NULL,
-                descricao VARCHAR NOT NULL,
-                tmp_exec VARCHAR NOT NULL,
-                tipo_grav VARCHAR NOT NULL, -- ADD ou DDD
+                descricao VARCHAR(120) NOT NULL,
+                tmp_exec VARCHAR(120) NOT NULL,
+                tipo_grav VARCHAR(120) NOT NULL, -- ADD ou DDD
                 cod_comp INTEGER NOT NULL,
                
 )ON spotper_fg02;
@@ -81,13 +81,13 @@ CHECK (tipo_grav = 'ADD' OR tipo_grav = 'DDD');
 
 CREATE TABLE composicao (
                 cod_comp INTEGER NOT NULL,
-                descricao VARCHAR NOT NULL,
+                descricao VARCHAR(120) NOT NULL,
 ) ON spotper_fg01;
 
 CREATE TABLE interprete (
                 cod_inter INTEGER NOT NULL,
-                nome VARCHAR NOT NULL,
-                tipo VARCHAR NOT NULL, -- Tipo de int√©rprete pode ser orquestra, trio, quarteto, ensemble, soprano, tenor, etc...
+                nome VARCHAR(120) NOT NULL,
+                tipo VARCHAR(120) NOT NULL, -- Tipo de intÈrprete pode ser orquestra, trio, quarteto, ensemble, soprano, tenor, etc...
                 
 )ON spotper_fg01;
 
@@ -101,9 +101,9 @@ CREATE TABLE faixa_inter (
 
 CREATE TABLE compositor (
                 cod_comp INTEGER NOT NULL,
-                nome VARCHAR NOT NULL,
-                cidade VARCHAR NOT NULL,
-                pais VARCHAR NOT NULL,
+                nome VARCHAR(120) NOT NULL,
+                cidade VARCHAR(120) NOT NULL,
+                pais VARCHAR(120) NOT NULL,
                 dt_nasc DATE NOT NULL,
                 dt_morte DATE,
                 cod_per INTEGER NOT NULL,
@@ -120,8 +120,8 @@ CREATE TABLE faixa_compositor (
 
 CREATE TABLE periodo_musical (
                 cod_per INTEGER NOT NULL,
-                intervalo VARCHAR NOT NULL,
-                descricao VARCHAR NOT NULL, -- idade m√©dia, renascen√ßa, barroco, cl√°ssico, rom√¢ntico e moderno
+                intervalo VARCHAR(120) NOT NULL,
+                descricao VARCHAR(120) NOT NULL, -- idade mÈdia, renascenÁa, barroco, cl·ssico, rom‚ntico e moderno
 )ON spotper_fg01;
 
 ALTER TABLE periodo_musical 
@@ -131,21 +131,21 @@ CHECK (descricao = 'idade media' or descricao = 'renascenca' or descricao = 'bar
 
 CREATE TABLE gravadora (
                 cod_grav INTEGER NOT NULL,
-                nome_grav VARCHAR NOT NULL,
-                site VARCHAR NOT NULL,
-                rua VARCHAR NOT NULL,
+                nome_grav VARCHAR(120) NOT NULL,
+                site VARCHAR(120) NOT NULL,
+                rua VARCHAR(120) NOT NULL,
                 numero INTEGER NOT NULL,
-                cep VARCHAR NOT NULL,
+                cep VARCHAR(120) NOT NULL,
 )ON spotper_fg01;
 
 CREATE TABLE telefone (
-                telefone VARCHAR NOT NULL,
+                telefone VARCHAR(120) NOT NULL,
                 cod_grav_tel INTEGER NOT NULL,
                
 )ON spotper_fg01;
 
 CREATE TABLE faixa_playlist (
-                cod_playlist VARCHAR NOT NULL,
+                cod_playlist VARCHAR(120) NOT NULL,
                 numero INTEGER NOT NULL,
                 cod_album INTEGER NOT NULL,
                 dt_ultima_vez DATE NOT NULL,
@@ -155,9 +155,9 @@ CREATE TABLE faixa_playlist (
 )ON spotper_fg02;
 
 CREATE TABLE playlist (
-                cod_playlist VARCHAR NOT NULL,
+                cod_playlist VARCHAR(120) NOT NULL,
                 dt_criacao DATE NOT NULL,
-                nome VARCHAR NOT NULL,
+                nome VARCHAR(120) NOT NULL,
                 tmp_exec_play TIME NOT NULL,
                 
 )ON spotper_fg02;
@@ -171,14 +171,14 @@ ALTER TABLE periodo_musical ADD CONSTRAINT periodo_musical_pk PRIMARY KEY (cod_p
 ALTER TABLE compositor ADD CONSTRAINT compositor_pk PRIMARY KEY (cod_comp);
 ALTER TABLE gravadora ADD CONSTRAINT gravadora_pk PRIMARY KEY (cod_grav);
 ALTER TABLE album ADD CONSTRAINT album_pk PRIMARY KEY (cod_album);
-ALTER TABLE faixa ADD CONSTRAINT faixa_pk PRIMARY KEY NONCLUSTERED (numero, cod_album); --n√£o clusterizado
+ALTER TABLE faixa ADD CONSTRAINT faixa_pk PRIMARY KEY NONCLUSTERED (numero, cod_album); --n„o clusterizado
 ALTER TABLE faixa_playlist ADD CONSTRAINT faixa_playlist_pk PRIMARY KEY (cod_playlist, numero, cod_album);
 ALTER TABLE faixa_compositor ADD CONSTRAINT faixa_compositor_pk PRIMARY KEY (cod_comp, numero, cod_album);
 ALTER TABLE faixa_inter ADD CONSTRAINT faixa_inter_pk PRIMARY KEY (cod_inter, numero, cod_album);
 ALTER TABLE telefone ADD CONSTRAINT telefone_pk PRIMARY KEY (telefone, cod_grav_tel);
 
 
---quest√£o 4
+--quest„o 4
 CREATE CLUSTERED INDEX faixa_album_index 
 ON faixa(cod_album) 
 WITH (fillfactor=100, pad_index=on);
@@ -284,7 +284,7 @@ IF( ((select count(*)
         where faixa.cod_album = inserted.cod_album)+1) > (64)) 
 
 BEGIN
-        RAISERROR('Limite m√°ximo de faixas no album atingido!!!', 10, 6)
+        RAISERROR('Limite m·ximo de faixas no album atingido!!!', 10, 6)
         ROLLBACK TRANSACTION
 END;
 
@@ -294,13 +294,13 @@ CREATE TRIGGER BARROCO_DDD
 ON faixa_compositor
 AFTER INSERT, UPDATE
 AS
-IF ( EXISTS(SELECT f.numero 'Numero da Faixa', f.cod_album 'C√≥digo album'
+IF ( EXISTS(SELECT f.numero 'Numero da Faixa', f.cod_album 'CÛdigo album'
 			FROM inserted ac, faixa f, compositor c, periodo_musical p
 			WHERE f.numero = ac.numero and f.cod_album = ac.cod_album and 
 			ac.cod_comp = c.cod_comp and c.cod_per = p.cod_per and p.descricao like 'barroco'
 			and f.tipo_grav != 'DDD' ) )
 BEGIN
-	RAISERROR('Faixa com per√≠odo Barroco s√≥ pode ser adquirida se o tipo de grava√ß√£o for DDD', 10, 6)
+	RAISERROR('Faixa com perÌodo Barroco sÛ pode ser adquirida se o tipo de gravaÁ„o for DDD', 10, 6)
 	ROLLBACK TRANSACTION
 END;
 
@@ -327,18 +327,18 @@ CREATE UNIQUE CLUSTERED INDEX I_VW_PLAYLIST
 ON VW_PLAYLIST(cod_playlist, nome);
 
 --------------||FUNCTIONS       ||---------------
---par√¢metro de entrada o nome (ou parte do)
---nome do compositor e o par√¢metro de sa√≠da todos os √°lbuns com obras
+--par‚metro de entrada o nome (ou parte do)
+--nome do compositor e o par‚metro de saÌda todos os ·lbuns com obras
 --compostas pelo compositor
 GO
 CREATE FUNCTION albuns_compostos(@nome_input VARCHAR(60))
 RETURNS @rtnTable TABLE(
                                 cod_album INTEGER NOT NULL,
                 cod_grav INTEGER NOT NULL,
-                descricao VARCHAR NOT NULL,
+                descricao VARCHAR(120) NOT NULL,
                 preco FLOAT NOT NULL,
                 dt_compra DATE NOT NULL,
-                tipo_compra VARCHAR NOT NULL, -- fisica ou download
+                tipo_compra VARCHAR(120) NOT NULL, -- fisica ou download
                 dt_grav DATE NOT NULL)
 AS
 BEGIN
