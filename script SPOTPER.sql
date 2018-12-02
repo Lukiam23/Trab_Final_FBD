@@ -131,7 +131,7 @@ CREATE TABLE periodo_musical (
 /*
 ALTER TABLE periodo_musical 
 ADD CONSTRAINT descricao_check
-CHECK (descricao = 'idade mÃ©dia' or descriÃ§Ã£o = 'renascenca' or descricao = 'barroco' or 
+CHECK (descricao = 'idade média' or descrição = 'renascenca' or descricao = 'barroco' or 
         descricao = 'classico' or descricao = 'romantico' or descricao = 'moderno');
 */
 
@@ -303,7 +303,7 @@ AS
 IF ( EXISTS(SELECT f.numero 'Numero da Faixa', f.cod_album 'Código album'
 			FROM inserted ac, faixa f, compositor c, periodo_musical p
 			WHERE f.numero = ac.numero and f.cod_album = ac.cod_album and 
-			ac.cod_comp = c.cod_comp and c.cod_per = p.cod_per and p.descricao like 'barroco'
+			ac.cod_compositor = c.cod_compositor and c.cod_per = p.cod_per and p.descricao like 'barroco'
 			and f.tipo_grav != 'DDD' ) )
 BEGIN
 	RAISERROR('Faixa com período Barroco só pode ser adquirida se o tipo de gravação for DDD', 10, 6)
@@ -340,12 +340,12 @@ INSERT INTO telefone VALUES
 
 GO
 INSERT INTO periodo_musical VALUES
-(1, 'entre os sÃ©culos V e XV', 'idade mÃ©dia'),
-(2, 'entre o sÃ©culo XIV e o sÃ©culo XVI', 'renascenÃ§a'),
-(3, 'entre o final do sÃ©culo XVI e meados do sÃ©culo XVIII', 'barroco'),
+(1, 'entre os séculos V e XV', 'idade média'),
+(2, 'entre o século XIV e o século XVI', 'renascença'),
+(3, 'entre o final do século XVI e meados do século XVIII', 'barroco'),
 (4, 'VI - IV a. C.', 'clÃ¡ssico'),
-(5, 'Final do sÃ©culo XVIII e grande parte do sÃ©culo XIX', 'romÃ¢ntico'),
-(6, '1453 indo atÃ© 1789', 'moderno'),
+(5, 'Final do século XVIII e grande parte do século XIX', 'romÃ¢ntico'),
+(6, '1453 indo até 1789', 'moderno'),
 (7, 'presente', 'comteporaneo');
 
 INSERT INTO interprete VALUES
