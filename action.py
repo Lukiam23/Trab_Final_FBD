@@ -41,9 +41,8 @@ class GenericScreen(Menu):
 
 class MusicScreen(Menu):
 	
-	def __init__(self,**kwargs):
-		super(MusicScreen,self).__init__(**kwargs)
-
+    def __init__(self,**kwargs):
+        super(MusicScreen,self).__init__(**kwargs)
 	def populate(self):	
 		self.ids.box.clear_widgets()
 		tarefas = ["Four seasons","Virus","Trino Del Diablo" ]	

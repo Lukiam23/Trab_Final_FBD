@@ -71,7 +71,7 @@ CREATE TABLE faixa (
                 descricao VARCHAR(120) NOT NULL,
                 tmp_exec VARCHAR(120) NOT NULL,
                 tipo_grav VARCHAR(120) NOT NULL, -- ADD ou DDD
-                cod_comp INTEGER NOT NULL,
+                cod_composicao INTEGER NOT NULL,
                
 )ON spotper_fg02;
 
@@ -80,14 +80,16 @@ ADD CONSTRAINT tipo_grav_check
 CHECK (tipo_grav = 'ADD' OR tipo_grav = 'DDD');
 
 CREATE TABLE composicao (
-                cod_comp INTEGER NOT NULL,
+                cod_composicao INTEGER NOT NULL,
                 descricao VARCHAR(120) NOT NULL,
 ) ON spotper_fg01;
 
 CREATE TABLE interprete (
                 cod_inter INTEGER NOT NULL,
                 nome VARCHAR(120) NOT NULL,
+
                 tipo VARCHAR(120) NOT NULL, -- Tipo de intÈrprete pode ser orquestra, trio, quarteto, ensemble, soprano, tenor, etc...
+
                 
 )ON spotper_fg01;
 
@@ -100,7 +102,8 @@ CREATE TABLE faixa_inter (
 )ON spotper_fg01;
 
 CREATE TABLE compositor (
-                cod_comp INTEGER NOT NULL,
+
+                cod_compositor INTEGER NOT NULL,
                 nome VARCHAR(120) NOT NULL,
                 cidade VARCHAR(120) NOT NULL,
                 pais VARCHAR(120) NOT NULL,
@@ -112,7 +115,7 @@ CREATE TABLE compositor (
 
 --compositor NxN faixa
 CREATE TABLE faixa_compositor (
-                cod_comp INTEGER NOT NULL,
+                cod_compositor INTEGER NOT NULL,
                 numero INTEGER NOT NULL,
                 cod_album INTEGER NOT NULL,
                
@@ -122,12 +125,15 @@ CREATE TABLE periodo_musical (
                 cod_per INTEGER NOT NULL,
                 intervalo VARCHAR(120) NOT NULL,
                 descricao VARCHAR(120) NOT NULL, -- idade mÈdia, renascenÁa, barroco, cl·ssico, rom‚ntico e moderno
+
 )ON spotper_fg01;
 
+/*
 ALTER TABLE periodo_musical 
 ADD CONSTRAINT descricao_check
-CHECK (descricao = 'idade media' or descricao = 'renascenca' or descricao = 'barroco' or 
+CHECK (descricao = 'idade m√©dia' or descri√ß√£o = 'renascenca' or descricao = 'barroco' or 
         descricao = 'classico' or descricao = 'romantico' or descricao = 'moderno');
+*/
 
 CREATE TABLE gravadora (
                 cod_grav INTEGER NOT NULL,
@@ -139,8 +145,8 @@ CREATE TABLE gravadora (
 )ON spotper_fg01;
 
 CREATE TABLE telefone (
-                telefone VARCHAR(120) NOT NULL,
                 cod_grav_tel INTEGER NOT NULL,
+                telefone VARCHAR(120) NOT NULL,
                
 )ON spotper_fg01;
 
@@ -151,7 +157,7 @@ CREATE TABLE faixa_playlist (
                 dt_ultima_vez DATE NOT NULL,
                 qtd INTEGER NOT NULL,
                 tpm_exec_faixa TIME NOT NULL,
-               	
+                
 )ON spotper_fg02;
 
 CREATE TABLE playlist (
@@ -164,16 +170,16 @@ CREATE TABLE playlist (
 
 
 --chaves primarias
-ALTER TABLE composicao ADD CONSTRAINT composicao_pk PRIMARY KEY (cod_comp);
+ALTER TABLE composicao ADD CONSTRAINT composicao_pk PRIMARY KEY (cod_composicao);
 ALTER TABLE interprete ADD CONSTRAINT interprete_pk PRIMARY KEY (cod_inter);
 ALTER TABLE playlist ADD CONSTRAINT playlist_pk PRIMARY KEY (cod_playlist);
 ALTER TABLE periodo_musical ADD CONSTRAINT periodo_musical_pk PRIMARY KEY (cod_per);
-ALTER TABLE compositor ADD CONSTRAINT compositor_pk PRIMARY KEY (cod_comp);
+ALTER TABLE compositor ADD CONSTRAINT compositor_pk PRIMARY KEY (cod_compositor);
 ALTER TABLE gravadora ADD CONSTRAINT gravadora_pk PRIMARY KEY (cod_grav);
 ALTER TABLE album ADD CONSTRAINT album_pk PRIMARY KEY (cod_album);
 ALTER TABLE faixa ADD CONSTRAINT faixa_pk PRIMARY KEY NONCLUSTERED (numero, cod_album); --n„o clusterizado
 ALTER TABLE faixa_playlist ADD CONSTRAINT faixa_playlist_pk PRIMARY KEY (cod_playlist, numero, cod_album);
-ALTER TABLE faixa_compositor ADD CONSTRAINT faixa_compositor_pk PRIMARY KEY (cod_comp, numero, cod_album);
+ALTER TABLE faixa_compositor ADD CONSTRAINT faixa_compositor_pk PRIMARY KEY (cod_compositor, numero, cod_album);
 ALTER TABLE faixa_inter ADD CONSTRAINT faixa_inter_pk PRIMARY KEY (cod_inter, numero, cod_album);
 ALTER TABLE telefone ADD CONSTRAINT telefone_pk PRIMARY KEY (telefone, cod_grav_tel);
 
@@ -185,13 +191,13 @@ WITH (fillfactor=100, pad_index=on);
 
 
 CREATE INDEX faixa_composicao_pk 
-ON faixa(cod_comp) 
+ON faixa(cod_composicao) 
 WITH (fillfactor=100, pad_index=on);
 
 -- Chaves estrangeiras --
 ALTER TABLE faixa ADD CONSTRAINT composicao_faixa_fk
-FOREIGN KEY (cod_comp)
-REFERENCES composicao (cod_comp)
+FOREIGN KEY (cod_composicao)
+REFERENCES composicao (cod_composicao)
 ON DELETE NO ACTION
 ON UPDATE CASCADE;
 
@@ -214,8 +220,8 @@ ON DELETE NO ACTION
 ON UPDATE CASCADE;
 
 ALTER TABLE faixa_compositor ADD CONSTRAINT compositor_faixa_compositor_fk
-FOREIGN KEY (cod_comp)
-REFERENCES compositor (cod_comp)
+FOREIGN KEY (cod_compositor)
+REFERENCES compositor (cod_compositor)
 ON DELETE NO ACTION
 ON UPDATE CASCADE;
 
@@ -265,12 +271,12 @@ ON album
 AFTER INSERT
 AS
 IF ( (SELECT preco FROM inserted) > (3 * (SELECT AVG(preco) 
-	  FROM album a inner join faixa f 
-	  ON f.cod_album = a.cod_album 
-	  WHERE tipo_grav = 'DDD')) )
+      FROM album a inner join faixa f 
+      ON f.cod_album = a.cod_album 
+      WHERE tipo_grav = 'DDD')) )
 BEGIN
-	RAISERROR('', 4, 2)
-	ROLLBACK TRANSACTION
+    RAISERROR('', 4, 2)
+    ROLLBACK TRANSACTION
 END;
 
 
@@ -302,11 +308,70 @@ IF ( EXISTS(SELECT f.numero 'Numero da Faixa', f.cod_album 'CÛdigo album'
 BEGIN
 	RAISERROR('Faixa com perÌodo Barroco sÛ pode ser adquirida se o tipo de gravaÁ„o for DDD', 10, 6)
 	ROLLBACK TRANSACTION
+
 END;
 
 
 
 --INSERIRNDO DADOS
+
+GO
+INSERT INTO gravadora VALUES 
+(1, 'AB Records', 'www.abrecords.com', 'rua ab', 30, '73612736'),
+(2, 'Line Records', 'www.linerecords.com.br', 'RUA GENERAL GUSTAVO CORDEIRO DE FARIAS', 84, '20910-220'),
+(3, 'LGK Music', 'lgkmusic.com.br', 'teste LGK', 340, '15421212'),
+(4, 'MK Music', 'www.mkmusic.com.br', 'Rua gotemburgo', 211, '20941-080'),
+(5, 'SONY', 'https://www.sonymusic.com.br', 'Rua da sony', 45, '4564544'),
+(6, 'WARNER', 'http://www.wmg.com/', 'Rua da warner', 54545, '1564584'),
+(7, 'Som Livre', 'https://www.somlivre.com/', '', 30, '73612736'),
+(8, 'Digital music', 'www.digitalmusic.com', 'rua digital music',544 , '215645641'),
+(9, 'Laborat√≥rio Fantasma', 'site fantasma', 'Rua 447',5447 , '24548645'),
+(10, 'Indie Records', 'indie site', 'Rua indie', 44, '113456'),
+(11, 'Gospel Records', 'gospel records site', 'rua gospel', 666, '6666-666'),
+(12, 'Band Music', 'Band site', 'Rua band', 2414, '5142144');
+GO
+
+INSERT INTO telefone VALUES
+(1, '85996182019'),
+(2, '85996182019'),
+(3, '85996182019'),
+(4, '85996182019'),
+(5, '85996182019');
+
+GO
+INSERT INTO periodo_musical VALUES
+(1, 'entre os s√©culos V e XV', 'idade m√©dia'),
+(2, 'entre o s√©culo XIV e o s√©culo XVI', 'renascen√ßa'),
+(3, 'entre o final do s√©culo XVI e meados do s√©culo XVIII', 'barroco'),
+(4, 'VI - IV a. C.', 'cl√°ssico'),
+(5, 'Final do s√©culo XVIII e grande parte do s√©culo XIX', 'rom√¢ntico'),
+(6, '1453 indo at√© 1789', 'moderno'),
+(7, 'presente', 'comteporaneo');
+
+INSERT INTO interprete VALUES
+(20, 'Xuxa', 'SOLO'),
+(1, 'Kades Singers', 'Coral'),
+(2, 'Lexa', 'SOLO'),
+(3, 'Anitta', 'SOLO'),
+(4, 'Linkin Park', 'Banda'),
+(5, 'Melim', 'Trio'),
+(6, 'Henrique & Juliano', 'Dupla');
+
+GO
+
+INSERT INTO album VALUES
+(1, 5, 'Hybrid theory', 29.00, '30/11/2018' ,'download', '01/06/2000');
+GO
+
+INSERT INTO composicao VALUES
+(1, 'single');
+
+INSERT INTO compositor VALUES
+(1, 'Linkin Park', 'Agoura Hills', 'EUA', '1996','' , 7);
+GO
+
+INSERT INTO faixa VALUES
+(1, 1, 'Papercut', '3:04', 'DDD', 1);
 
 
 -----------------||VIEW MATERIALIZADA||-----------------
@@ -345,7 +410,7 @@ BEGIN
 INSERT INTO @rtnTable
         SELECT a.cod_album, a.cod_grav, a.descricao, a.preco, a.dt_compra, a.tipo_compra, a.dt_grav
         FROM album a, faixa_compositor ac, compositor c
-        WHERE a.cod_album = ac.cod_album and ac.cod_comp = c.cod_comp and c.nome LIKE '%'+@nome_input+'%'
+        WHERE a.cod_album = ac.cod_album and ac.cod_compositor = c.cod_compositor and c.nome LIKE '%'+@nome_input+'%'
 
 RETURN
 END
