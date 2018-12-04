@@ -9,5 +9,4 @@ cnxn = pyodbc.connect('Driver={SQL Server};'
 
 cursor = cnxn.cursor()
 cursor.execute("INSERT INTO dbo.gravadora values (1,'Sony','www.sony.com','Rua dos paranaue',5,'608717167')")
-print()
 cnxn.commit()

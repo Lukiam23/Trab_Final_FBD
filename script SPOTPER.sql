@@ -301,13 +301,13 @@ ON faixa_compositor
 AFTER INSERT, UPDATE
 AS
 IF ( EXISTS(SELECT f.numero 'Numero da Faixa', f.cod_album 'Código album'
-			FROM inserted ac, faixa f, compositor c, periodo_musical p
-			WHERE f.numero = ac.numero and f.cod_album = ac.cod_album and 
-			ac.cod_compositor = c.cod_compositor and c.cod_per = p.cod_per and p.descricao like 'barroco'
-			and f.tipo_grav != 'DDD' ) )
+            FROM inserted ac, faixa f, compositor c, periodo_musical p
+            WHERE f.numero = ac.numero and f.cod_album = ac.cod_album and 
+            ac.cod_compositor = c.cod_compositor and c.cod_per = p.cod_per and p.descricao like 'barroco'
+            and f.tipo_grav != 'DDD' ) )
 BEGIN
-	RAISERROR('Faixa com período Barroco só pode ser adquirida se o tipo de gravação for DDD', 10, 6)
-	ROLLBACK TRANSACTION
+    RAISERROR('Faixa com período Barroco só pode ser adquirida se o tipo de gravação for DDD', 10, 6)
+    ROLLBACK TRANSACTION
 
 END;
 
@@ -433,7 +433,7 @@ inner join faixa_playlist fp on f.numero = fp.numero and f.cod_album = fp.cod_al
 --9c) N está otimizado
 select top 1 c.nome, count(fp.cod_playlist) qtd_musicas
 from compositor c inner join faixa_compositor fc 
-on c.cod_compositor = fc.cod_compositor		
+on c.cod_compositor = fc.cod_compositor     
 inner join faixa f on fc.cod_album = f.cod_album and fc.numero = f.numero
 inner join faixa_playlist fp on f.cod_album = fp.cod_album and  fp.numero = f.numero
 group by c.nome, c.cod_compositor 
