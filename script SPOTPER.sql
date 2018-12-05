@@ -52,7 +52,7 @@ CREATE TABLE album (
                 descricao VARCHAR(120) NOT NULL,
                 preco FLOAT NOT NULL,
                 dt_compra DATE NOT NULL,
-                tipo_compra VARCHAR(120) NOT NULL, -- fisica ou download
+                tipo_compra VARCHAR(10) NOT NULL, -- fisica ou download
                 dt_grav DATE NOT NULL,
                 
 )ON spotper_fg01;
@@ -68,9 +68,9 @@ CHECK (tipo_compra = 'cd' or tipo_compra = 'vinil' or tipo_compra = 'download');
 CREATE TABLE faixa (
                 numero INTEGER NOT NULL,
                 cod_album INTEGER NOT NULL,
-                descricao VARCHAR(120) NOT NULL,
-                tmp_exec VARCHAR(120) NOT NULL,
-                tipo_grav VARCHAR(120) NOT NULL, -- ADD ou DDD
+                descricao VARCHAR(30) NOT NULL,
+                tmp_exec TIME NOT NULL,
+                tipo_grav VARCHAR(6) NOT NULL, -- ADD ou DDD
                 cod_composicao INTEGER NOT NULL,
                
 )ON spotper_fg02;
@@ -81,14 +81,14 @@ CHECK (tipo_grav = 'ADD' OR tipo_grav = 'DDD');
 
 CREATE TABLE composicao (
                 cod_composicao INTEGER NOT NULL,
-                descricao VARCHAR(120) NOT NULL,
+                descricao VARCHAR(60) NOT NULL,
 ) ON spotper_fg01;
 
 CREATE TABLE interprete (
                 cod_inter INTEGER NOT NULL,
-                nome VARCHAR(120) NOT NULL,
+                nome VARCHAR(60) NOT NULL,
 
-                tipo VARCHAR(120) NOT NULL, -- Tipo de intérprete pode ser orquestra, trio, quarteto, ensemble, soprano, tenor, etc...
+                tipo VARCHAR(30) NOT NULL, -- Tipo de intérprete pode ser orquestra, trio, quarteto, ensemble, soprano, tenor, etc...
 
                 
 )ON spotper_fg01;
@@ -104,9 +104,9 @@ CREATE TABLE faixa_inter (
 CREATE TABLE compositor (
 
                 cod_compositor INTEGER NOT NULL,
-                nome VARCHAR(120) NOT NULL,
-                cidade VARCHAR(120) NOT NULL,
-                pais VARCHAR(120) NOT NULL,
+                nome VARCHAR(60) NOT NULL,
+                cidade VARCHAR(60) NOT NULL,
+                pais VARCHAR(30) NOT NULL,
                 dt_nasc DATE NOT NULL,
                 dt_morte DATE,
                 cod_per INTEGER NOT NULL,
@@ -123,47 +123,48 @@ CREATE TABLE faixa_compositor (
 
 CREATE TABLE periodo_musical (
                 cod_per INTEGER NOT NULL,
-                intervalo VARCHAR(120) NOT NULL,
-                descricao VARCHAR(120) NOT NULL, -- idade média, renascença, barroco, clássico, romântico e moderno
+                intervalo VARCHAR(60) NOT NULL,
+                descricao VARCHAR(20) NOT NULL, -- idade média, renascença, barroco, clássico, romântico e moderno
 
 )ON spotper_fg01;
 
-/*
+
 ALTER TABLE periodo_musical 
 ADD CONSTRAINT descricao_check
-CHECK (descricao = 'idade média' or descrição = 'renascenca' or descricao = 'barroco' or 
-        descricao = 'classico' or descricao = 'romantico' or descricao = 'moderno');
-*/
+CHECK (descricao = 'idade media' or descricao = 'idade média' 
+		or descricao = 'renascenca' or descricao = 'renascênça'
+ 		or descricao = 'barroco' or descricao = 'classico' 
+ 		or descricao = 'romantico' or descricao = 'romântico' 
+ 		or descricao = 'moderno' or descricao = 'contemporaneo'
+ 		or descricao = 'contemporâneo');
+
 
 CREATE TABLE gravadora (
                 cod_grav INTEGER NOT NULL,
-                nome_grav VARCHAR(120) NOT NULL,
+                nome_grav VARCHAR(60) NOT NULL,
                 site VARCHAR(120) NOT NULL,
                 rua VARCHAR(120) NOT NULL,
                 numero INTEGER NOT NULL,
-                cep VARCHAR(120) NOT NULL,
+                cep VARCHAR(30) NOT NULL,
 )ON spotper_fg01;
 
 CREATE TABLE telefone (
                 cod_grav_tel INTEGER NOT NULL,
-                telefone VARCHAR(120) NOT NULL,
+                telefone VARCHAR(20) NOT NULL,
                
 )ON spotper_fg01;
 
 CREATE TABLE faixa_playlist (
-                cod_playlist VARCHAR(120) NOT NULL,
+                cod_playlist INTEGER NOT NULL,
                 numero INTEGER NOT NULL,
                 cod_album INTEGER NOT NULL,
                 dt_ultima_vez DATE NOT NULL,
-                qtd INTEGER NOT NULL,
-                tpm_exec_faixa TIME NOT NULL,
-                
 )ON spotper_fg02;
 
 CREATE TABLE playlist (
-                cod_playlist VARCHAR(120) NOT NULL,
+                cod_playlist INTEGER NOT NULL,
+                nome VARCHAR(60) NOT NULL,
                 dt_criacao DATE NOT NULL,
-                nome VARCHAR(120) NOT NULL,
                 tmp_exec_play TIME NOT NULL,
                 
 )ON spotper_fg02;
@@ -312,71 +313,6 @@ BEGIN
 END;
 
 
-
---INSERIRNDO DADOS
-
-GO
-INSERT INTO gravadora VALUES 
-(1, 'AB Records', 'www.abrecords.com', 'rua ab', 30, '73612736'),
-(2, 'Line Records', 'www.linerecords.com.br', 'RUA GENERAL GUSTAVO CORDEIRO DE FARIAS', 84, '20910-220'),
-(3, 'LGK Music', 'lgkmusic.com.br', 'teste LGK', 340, '15421212'),
-(4, 'MK Music', 'www.mkmusic.com.br', 'Rua gotemburgo', 211, '20941-080'),
-(5, 'SONY', 'https://www.sonymusic.com.br', 'Rua da sony', 45, '4564544'),
-(6, 'WARNER', 'http://www.wmg.com/', 'Rua da warner', 54545, '1564584'),
-(7, 'Som Livre', 'https://www.somlivre.com/', '', 30, '73612736'),
-(8, 'Digital music', 'www.digitalmusic.com', 'rua digital music',544 , '215645641'),
-(9, 'LaboratÃ³rio Fantasma', 'site fantasma', 'Rua 447',5447 , '24548645'),
-(10, 'Indie Records', 'indie site', 'Rua indie', 44, '113456'),
-(11, 'Gospel Records', 'gospel records site', 'rua gospel', 666, '6666-666'),
-(12, 'Band Music', 'Band site', 'Rua band', 2414, '5142144');
-GO
-
-INSERT INTO telefone VALUES
-(1, '85996182019'),
-(2, '85996182019'),
-(3, '85996182019'),
-(4, '85996182019'),
-(5, '85996182019');
-
-GO
-INSERT INTO periodo_musical VALUES
-(1, 'entre os séculos V e XV', 'idade média'),
-(2, 'entre o século XIV e o século XVI', 'renascença'),
-(3, 'entre o final do século XVI e meados do século XVIII', 'barroco'),
-(4, 'VI - IV a. C.', 'clÃ¡ssico'),
-(5, 'Final do século XVIII e grande parte do século XIX', 'romÃ¢ntico'),
-(6, '1453 indo até 1789', 'moderno'),
-(7, 'presente', 'comteporaneo');
-
-INSERT INTO interprete VALUES
-(20, 'Xuxa', 'SOLO'),
-(1, 'Kades Singers', 'Coral'),
-(2, 'Lexa', 'SOLO'),
-(3, 'Anitta', 'SOLO'),
-(4, 'Linkin Park', 'Banda'),
-(5, 'Melim', 'Trio'),
-(6, 'Henrique & Juliano', 'Dupla');
-
-GO
-
-INSERT INTO album VALUES
-(1, 5, 'Hybrid theory', 29.00, '30/11/2018' ,'download', '01/06/2000');
-GO
-
-INSERT INTO composicao VALUES
-(1, 'single');
-
-INSERT INTO compositor VALUES
-(1, 'Linkin Park', 'Agoura Hills', 'EUA', '1996','' , 7);
-GO
-
-INSERT INTO faixa VALUES
-(1, 1, 'Papercut', '3:04', 'DDD', 1);
-
-insert into faixa_compositor VALUES
-(1,1,1);
-
-
 -----------------||VIEW MATERIALIZADA||-----------------
 GO
 
@@ -419,31 +355,5 @@ RETURN
 END
 
 GO
---Consultas
---9a)
-select * from album where preco > (select avg(preco) media from album);
---9b) incompleta
-SELECT g.nome_grav
-FROM gravadora g 
-inner join album a on a.cod_grav = g.cod_grav
-inner join faixa f on f.cod_album = a.cod_album
-inner join faixa_playlist fp on f.numero = fp.numero and f.cod_album = fp.cod_album
 
 
---9c) N está otimizado
-select top 1 c.nome, count(fp.cod_playlist) qtd_musicas
-from compositor c inner join faixa_compositor fc 
-on c.cod_compositor = fc.cod_compositor     
-inner join faixa f on fc.cod_album = f.cod_album and fc.numero = f.numero
-inner join faixa_playlist fp on f.cod_album = fp.cod_album and  fp.numero = f.numero
-group by c.nome, c.cod_compositor 
-order by 2;
---9d)
-SELECT p.* FROM playlist p
-inner join faixa_playlist fp on p.cod_playlist = fp.cod_playlist
-inner join faixa f on f.cod_album = fp.cod_album and f.numero = fp.numero
-inner join composicao c on c.cod_composicao = f.cod_composicao
-inner join faixa_compositor fc on fc.cod_album = f.cod_album and f.numero = fc.numero
-inner join compositor co on fc.cod_compositor = co.cod_compositor
-inner join periodo_musical pm on co.cod_per = pm.cod_per
-where c.descricao = '_oncerto' and pm.descricao = '_arroco';
