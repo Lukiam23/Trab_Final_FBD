@@ -165,7 +165,7 @@ CREATE TABLE playlist (
                 cod_playlist INTEGER NOT NULL,
                 nome VARCHAR(60) NOT NULL,
                 dt_criacao DATE NOT NULL,
-                tmp_exec_play TIME NOT NULL,
+                tmp_exec_play TIME NOT NULL default '00:00:00',
                 
 )ON spotper_fg02;
 
@@ -189,6 +189,7 @@ ALTER TABLE telefone ADD CONSTRAINT telefone_pk PRIMARY KEY (telefone, cod_grav_
 CREATE CLUSTERED INDEX faixa_album_index 
 ON faixa(cod_album) 
 WITH (fillfactor=100, pad_index=on);
+
 
 
 CREATE INDEX faixa_composicao_pk 
@@ -357,3 +358,36 @@ END
 GO
 
 
+-- Trigger para quando inserir uma faixa em uma playlist ele altera o tempo de execução da playlist, somando ou subtraindo a duração daquela faixa
+CREATE TRIGGER DURACAO_PLAYLSIT
+ON faixa_playlist
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+DECLARE @cod_play INT
+DECLARE @temp_exec_play real
+
+IF (EXISTS(SELECT * FROM deleted))
+
+	BEGIN
+		SELECT @cod_play=@cod_play FROM deleted
+		SELECT @temp_exec_play = sum(cast(cast(tmp_exec as datetime) as real))
+		FROM faixa f INNER JOIN faixa_playlist fp ON
+		f.cod_album = fp.cod_album and
+		f.numero = fp.numero where fp.cod_playlist=@cod_play
+		SET @temp_exec_play = @temp_exec_play - (SELECT cast(cast(f.tmp_exec as datetime) as real) 
+												FROM deleted d inner join faixa f 
+												ON f.cod_album = d.cod_album and f.numero = d.numero)
+	END
+	ELSE
+	BEGIN
+		SELECT @cod_play=@cod_play FROM inserted
+		SELECT @temp_exec_play = sum(cast(cast(tmp_exec as datetime) as real))
+		FROM faixa f INNER JOIN faixa_playlist fp ON
+		f.cod_album = fp.cod_album and
+		f.numero = fp.numero where fp.cod_playlist=@cod_play
+		SET @temp_exec_play = @temp_exec_play + (SELECT cast(cast(f.tmp_exec as datetime) as real) 
+												FROM inserted i inner join faixa f on f.cod_album = i.cod_album and f.numero = i.numero)
+	END
+	UPDATE playlist SET tmp_exec_play=CAST(CAST(@temp_exec_play AS datetime) AS TIME) WHERE cod_playlist=@cod_play
+END
