@@ -9,7 +9,7 @@ from gravadora g inner join album a on g.cod_grav=a.cod_grav
 	 inner join faixa_playlist fp on fp.cod_album = f.cod_album and fp.numero_faixa=f.numero_faixa
 	 inner join faixa_compositor fc on f.numero_faixa = fc.numero_faixa and f.cod_album = fc.cod_album
 	 inner join compositor c on fc.id_comp = c.id_comp
-	 and c.nome='Frank Martin'
+	 and c.nome='Dvorack'
 group by g.cod_grav, g.nome
 having COUNT(fp.cod_play)>=all(select count(fp.cod_play)
 							from gravadora g inner join album a on g.cod_grav=a.cod_grav
