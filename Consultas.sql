@@ -22,13 +22,22 @@ having COUNT(fp.cod_playlist)>=all(select count(fp.cod_playlist)
 
 
 --9c)
-select top 1 c.nome, count(fp.cod_playlist) qtd_musicas
-from compositor c inner join faixa_compositor fc 
-on c.cod_compositor = fc.cod_compositor     
-inner join faixa f on fc.cod_album = f.cod_album and fc.numero = f.numero
-inner join faixa_playlist fp on f.cod_album = fp.cod_album and  fp.numero = f.numero
-group by c.nome, c.cod_compositor 
-order by 2;
+SELECT c.nome, count(c.cod_compositor) 'Qtd_faixas'
+FROM compositor c inner join faixa_compositor fc
+ON c.cod_compositor = fc.cod_compositor
+inner join faixa f on f.numero = fc.numero
+and f.cod_album = fc.cod_album
+inner join faixa_playlist fp on f.numero = fp.numero
+and f.cod_album = fp.cod_album
+group by c.nome
+having 2 >=all (SELECT count(c.cod_compositor) 'Qtd_faixas'
+FROM compositor c inner join faixa_compositor fc
+ON c.cod_compositor = fc.cod_compositor
+inner join faixa f on f.numero = fc.numero
+and f.cod_album = fc.cod_album
+inner join faixa_playlist fp on f.numero = fp.numero
+and f.cod_album = fp.cod_album
+group by c.nome)
 --9d)
 
 (SELECT p.* FROM playlist p
