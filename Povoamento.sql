@@ -152,26 +152,3 @@ INSERT INTO faixa_playlist VALUES (7,2,8,'29/04/2018');
 
 INSERT INTO faixa_playlist VALUES (8,1,9,'29/04/2018');
 INSERT INTO faixa_playlist VALUES (8,2,9,'29/04/2018');
-
-
-
-
-(SELECT p.cod_playlist, p.nome FROM playlist p
-inner join faixa_playlist fp on p.cod_playlist = fp.cod_playlist
-inner join faixa f on f.cod_album = fp.cod_album and f.numero = fp.numero
-inner join composicao c on c.cod_composicao = f.cod_composicao
-inner join faixa_compositor fc on fc.cod_album = f.cod_album and f.numero = fc.numero
-inner join compositor co on fc.cod_compositor = co.cod_compositor
-inner join periodo_musical pm on co.cod_per = pm.cod_per
-group by p.cod_playlist, p.nome)
-
-EXCEPT
-(SELECT p.cod_playlist,p.nome FROM playlist p
-inner join faixa_playlist fp on p.cod_playlist = fp.cod_playlist
-inner join faixa f on f.cod_album = fp.cod_album and f.numero = fp.numero
-inner join composicao c on c.cod_composicao = f.cod_composicao
-inner join faixa_compositor fc on fc.cod_album = f.cod_album and f.numero = fc.numero
-inner join compositor co on fc.cod_compositor = co.cod_compositor
-inner join periodo_musical pm on co.cod_per = pm.cod_per
-where c.descricao not like '_oncerto' OR pm.descricao not like '_arroco'
-group by p.cod_playlist, p.nome);
