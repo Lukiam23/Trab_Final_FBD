@@ -131,6 +131,7 @@ INSERT INTO playlist VALUES
 (6,'Playlist barroco_concerto', '03/05/2018','00:00:00'),
 (7,'Playlist 1 barroco_concerto e outro não', '03/05/2018','00:00:00'),
 (8,'Playlist não barroco_concerto', '03/05/2018','00:00:00');
+insert into playlist (cod_playlist, nome, tmp_exec_play ) values (9, 'p1','00:00:00')
 
 GO
 INSERT INTO faixa_playlist VALUES (1,1,1,'03/12/2018');

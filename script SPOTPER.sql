@@ -164,12 +164,11 @@ CREATE TABLE faixa_playlist (
 CREATE TABLE playlist (
                 cod_playlist INTEGER NOT NULL,
                 nome VARCHAR(60) NOT NULL,
-                dt_criacao DATE NOT NULL,
+                dt_criacao DATE NOT NULL default getdate(),
                 tmp_exec_play TIME NOT NULL default '00:00:00',
                 
 )ON spotper_fg02;
-
-
+--
 --chaves primarias
 ALTER TABLE composicao ADD CONSTRAINT composicao_pk PRIMARY KEY (cod_composicao);
 ALTER TABLE interprete ADD CONSTRAINT interprete_pk PRIMARY KEY (cod_inter);
@@ -277,7 +276,9 @@ IF ( (SELECT preco FROM inserted) > (3 * (SELECT AVG(preco)
       ON f.cod_album = a.cod_album 
       WHERE tipo_grav = 'DDD')) )
 BEGIN
-    RAISERROR('', 4, 2)
+    RAISERROR('O preço de compra de um álbum não dever ser superior a três vezes a
+média do preço de compra de álbuns, com todas as faixas com tipo de
+gravação DDD.', 4, 2)
     ROLLBACK TRANSACTION
 END;
 

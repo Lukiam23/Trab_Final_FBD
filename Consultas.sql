@@ -1,9 +1,14 @@
+--use master
 use spotper;
 --Consultas
---9a)
+--9a)Listar os álbum com preço de compra maior que a média de preços de compra
+--de todos os álbuns
 select * from album where preco > (select avg(preco) media from album);
+
+
 --9b) Listar nome da gravadora com maior número de playlists que possuem pelo
 --uma faixa composta pelo compositor Dvorack.
+
 --select * from compositor
 select g.nome_grav, count(fp.cod_playlist) 'qtd playlist'
 from gravadora g inner join album a on g.cod_grav=a.cod_grav
