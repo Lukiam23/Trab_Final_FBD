@@ -8,37 +8,19 @@
 	FloatLayout:
 		orientation:'vertical'
 		Button:
-		    pos_hint:{'top': 0.9,'right':0.95}
+			pos_hint:{'top': 0.9,'right':0.95}
 	        id: btn
-	        text: 'Selec a playlist'
-	        on_release: dropdown.open(self)
-	        size_hint: 0.2,None
+	        text: 'ADD'
+	        on_release: root.add()
+	        size_hint: 0.05,None
         	height: '48dp'
 
-    	Widget:
-			on_parent: dropdown.dismiss()
-		DropDown:
-	        id: dropdown
-	       
-	        pos_hint:{'top': 0.9,'right':0.95}
-	        on_select: btn.text = 'Playlist: {}'.format(args[1])
+		TextInput:
+			id:playlistName
+			pos_hint:{'top': 0.90,'right':0.89}
+			size_hint:0.12,0.065
+			hint_text: 'Insert the playlist code'
 	        
-
-	        Button:
-	            text: 'florence and...'
-	            size_hint_y: None
-	            height: '48dp'
-	            on_release: dropdown.select('florence and...')
-	        Button:
-	            text: 'Value B'
-	            size_hint_y: None
-	            height: '48dp'
-	            on_release: dropdown.select('B')
-	        Button:
-	            text: 'Value C'
-	            size_hint_y: None
-	            height: '48dp'
-	            on_release: dropdown.select('C')
 		Label:
 			text: "Musics"
 			font_size: '40dp'
@@ -46,8 +28,6 @@
 			width:512
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.40}
-
-
 
 		ScrollView:
 			id:scroll
@@ -76,6 +56,18 @@
 			width:512
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.41}
+		TextInput:
+			id:newplaylist
+			pos_hint:{'top': 0.90,'right':0.89}
+			size_hint:0.70,0.05
+			hint_text: 'New playlist'
+		Button:
+			id:search
+			text:"ADD"
+			size_hint:0.1,0.05
+			pos_hint:{'top': 0.90,'right':0.99}
+			on_press: root.add()
+			on_release: newplaylist.text = ''
 
 		ScrollView:
 			id:scroll
@@ -137,7 +129,9 @@
 		   
 <GenericScreen>:
 	FloatLayout:
+		id:floatlayout
 		orientation:'vertical'
+		
 		Label:
 			id:title
 			font_size: '40dp'
@@ -148,9 +142,61 @@
     		halign: 'left'
     		valign: 'middle'
 		    pos_hint:{'top': 1,'x':0.18}
+		Label:
+			id:price
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 0.899,'x':0.20}
+		Label:
+			id:dt_grav
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 0.9,'x':0.32}
+		Label:
+			id:tipo_compra 
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 0.9,'x':0.50}
+		Label:
+			id:dt_compra
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 0.9,'x':0.68}
+
+		Label:
+			text: "Musics"
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 0.8,'x':0.199}
+
 		ScrollView:
 			id:scroll
-			pos_hint:{'right':1}
+			pos_hint:{'right':0.97,'top':0.7}
 			size_hint: (0.85, .8)
 	        bar_width: 10
 	       
@@ -162,6 +208,121 @@
 				orientation: 'vertical'
 				size_hint_y: None
 				height: self.minimum_height
+
+<EditScreen>:
+	FloatLayout:
+		Label:
+			id:title
+			font_size: '40dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+		    pos_hint:{'top': 1,'x':0.18}
+		Button:
+			id:submit
+			font_size: '20dp'
+			size_hint: (0.06, None)
+			width:5
+		    height: 50
+			pos_hint:{'top': 0.25,'x':0.5}
+			text:"Submit"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.9,'x':0.18}
+			text:"Description:"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.8,'x':0.18}
+			text:"Recorder:"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.7,'x':0.18}
+			text:"Price:"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.6,'x':0.18}
+			text:"Purchase Date:"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.5,'x':0.18}
+			text:"Purchase Type:"
+		Label:
+			font_size: '20dp'
+			size_hint: (1, None)
+			width:512
+		    height: 100
+		    text_size: self.size
+    		halign: 'left'
+    		valign: 'middle'
+			pos_hint:{'top': 0.4,'x':0.18}
+			text:"Record Date:"
+
+		TextInput:
+			id:description
+			pos_hint:{'top': 0.85,'x':0.3}
+			size_hint:0.4,0.05
+			
+		TextInput:
+			id:recorder
+			pos_hint:{'top': 0.75,'x':0.3}
+			size_hint:0.05,0.05
+			
+		TextInput:
+			id:price
+			pos_hint:{'top': 0.65,'x':0.3}
+			size_hint:0.07,0.05
+			
+		TextInput:
+			id:purchaseDate
+			pos_hint:{'top': 0.55,'x':0.3}
+			size_hint:0.09,0.05
+			
+		TextInput:
+			id:purchaseType
+			pos_hint:{'top': 0.45,'x':0.3}
+			size_hint:0.2,0.05
+			
+		TextInput:
+			id:recordDate
+			pos_hint:{'top': 0.35,'x':0.3}
+			size_hint:0.09,0.05
+			
+
+			
+
 
 <RecorderScreen>:
 	FloatLayout:
@@ -186,8 +347,6 @@
 			width:512
 		    height: 50
 		    pos_hint:{'top': 1,'right':0.43}
-		    
-
 	
 <MusicalPeriod>:
 	FloatLayout:
@@ -253,4 +412,7 @@
 		manager: screen_manager
 	GenericScreen:
 		name:'generic'
+		manager: screen_manager
+	EditScreen:
+		name:'editscreen'
 		manager: screen_manager
