@@ -115,14 +115,13 @@ INSERT INTO playlist VALUES
 (5,'Playlist do Gado', '03/05/2018','00:00:00');
 
 GO
-INSERT INTO faixa_playlist VALUES
-(1,1,1,'03/12/2018'),
-(2,2,2,'02/12/2018'),
-(3,3,4,'01/12/2018'),
-(4,4,4,'10/11/2018'),
-(5,5,5,'09/11/2018'),
-(1,5,2,'08/11/2018'),
-(2,4,1,'02/07/2018'),
-(3,3,5,'05/05/2018'),
-(4,2,4,'27/02/2018'),
-(5,1,3,'29/04/2018');
+INSERT INTO faixa_playlist VALUES (1,1,1,'03/12/2018');
+INSERT INTO faixa_playlist VALUES (2,2,2,'02/12/2018');
+INSERT INTO faixa_playlist VALUES (3,3,4,'01/12/2018');
+INSERT INTO faixa_playlist VALUES (4,4,4,'10/11/2018');
+INSERT INTO faixa_playlist VALUES (5,5,5,'09/11/2018');
+INSERT INTO faixa_playlist VALUES (1,5,2,'08/11/2018');
+INSERT INTO faixa_playlist VALUES (2,4,1,'02/07/2018');
+INSERT INTO faixa_playlist VALUES (3,3,5,'05/05/2018');
+INSERT INTO faixa_playlist VALUES (4,2,4,'27/02/2018');
+INSERT INTO faixa_playlist VALUES (5,1,3,'29/04/2018');
